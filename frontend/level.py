@@ -11,7 +11,6 @@ class Level:
 
         self.create_map()
 
-
 # gerar o mapa
     def create_map(self):
         for row_index, row in enumerate(WORLD_MAP):
@@ -20,7 +19,7 @@ class Level:
                 y = row_index * TILESIZE
                 if col == 'x':
                     Tile((x,y), [self.visible_sprites,self.obstacles_sprites])
-                if col == 'p':
+                elif col == 'p':
                     self.player = Player((x, y), [self.visible_sprites], self.obstacles_sprites)
 
 #movimentação do player
@@ -39,7 +38,6 @@ class YSortCameraGroup(pygame.sprite.Group):
         
         self.offset = pygame.math.Vector2(100,150)
     def custom_draw(self, player):
-
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
 
