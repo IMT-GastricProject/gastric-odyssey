@@ -1,6 +1,8 @@
 import pygame, sys
 from settings import WIDTH, HEIGHT, FPS
 from level import *
+
+#exibir jogo (com base nas configurações)
 class Game:
     def __init__(self):
 
