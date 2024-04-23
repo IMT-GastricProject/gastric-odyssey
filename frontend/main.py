@@ -1,17 +1,16 @@
 import pygame, sys
-from settings import WIDTH, HEIGHT, FPS
+from settings import SCREEN_SIZE, FPS
 from level import *
 
 #exibir jogo (com base nas configurações)
 class Game:
     def __init__(self):
-
         pygame.init()
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        self.screen = pygame.display.set_mode(SCREEN_SIZE, pygame.RESIZABLE)
         pygame.display.set_caption('Gastic Odyssey')
         self.clock = pygame.time.Clock()
         self.level = Level()
-
+        
     def run(self):
         while True:
             for event in pygame.event.get():

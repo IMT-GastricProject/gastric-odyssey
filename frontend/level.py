@@ -6,7 +6,7 @@ from player import Player
 class Level:
     def __init__(self):
         self.display_surface = pygame.display.get_surface()
-        self.visible_sprites = YSortCameraGroup()
+        self.visible_sprites = Camera()
         self.obstacles_sprites = pygame.sprite.Group()
 
         self.create_map()
@@ -29,7 +29,7 @@ class Level:
 
 
 #configurações da câmera
-class YSortCameraGroup(pygame.sprite.Group):
+class Camera(pygame.sprite.Group):
     def __init__(self):
         super().__init__()
         self.display_surface = pygame.display.get_surface()
