@@ -4,7 +4,7 @@ from settings import *
 class Player(pygame.sprite.Sprite):
     def __init__(self,pos,groups, obstacle_sprites):
         super().__init__(groups)
-        #define a imagem inicial do sprite do player, ela é modificada a cada mudança de direção, usando o método directionChange    
+        #define a imagem inicial do sprite do player, ela é modificada a cada mudança de direção, usando o método directionChange 
         self.directionChange('player_right')
         #rect é o retângulo que forma a imagem do sprite. É diferente da hitbox
         self.rect = self.image.get_rect(topleft = pos)
@@ -33,8 +33,10 @@ class Player(pygame.sprite.Sprite):
 
         if any(keys[key] for key in forward_keys):
             self.direction.y = -1
+            self.directionChange('player_forward')
         elif any(keys[key] for key in backward_keys):
             self.direction.y = 1
+            self.directionChange('player_backward')
         else:
             self.direction.y = 0
 
