@@ -1,6 +1,7 @@
 import pygame, sys
 from settings import SCREEN_SIZE, FPS
 from level import *
+import settings
 
 #exibir jogo (com base nas configurações)
 class Game:
