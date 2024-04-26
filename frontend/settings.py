@@ -1,5 +1,12 @@
-WIDTH = 1920
-HEIGHT = 1080
+from screeninfo import get_monitors
+
+#ajusta o tamanho da tela para o tamanho do monitor principal da pessoa
+for monitor in get_monitors():
+    if monitor.is_primary == True:
+        WIDTH = monitor.width
+        HEIGHT = monitor.height
+        break
+
 SCREEN_SIZE = [WIDTH, HEIGHT]
 FPS = 60
 TILESIZE = 64
