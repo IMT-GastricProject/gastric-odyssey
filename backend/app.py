@@ -7,7 +7,7 @@ load_dotenv()
 
 host = os.getenv('HOST')
 port = os.getenv('PORT')
-user = os.getenv('USER')
+sysuser = os.getenv('SYSUSER')
 password = os.getenv('PASSWORD')
 db = os.getenv('DB')
 
@@ -16,7 +16,7 @@ app = Flask(__name__)
 #criar uma conexão com o banco
 def db_connection():
   cnx = mysql.connector.connect(
-    user=f'{user}', 
+    user=f'{sysuser}', 
     password=f'{password}',
     host=f'{host}',
     port=f'{port}',
@@ -37,7 +37,7 @@ def createUser():
       cursor = conn.cursor()
       user = request.get_json()
       query = """INSERT INTO users (username, password) VALUES (%s, %s)"""
-      data = (user['name'], user['password'])
+      data = (user['username'], user['password'])
       cursor.execute(query,data)
       conn.commit()
       return {
