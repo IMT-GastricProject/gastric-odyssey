@@ -27,9 +27,9 @@ def getSpecificUser(id):
       return {
         'message': 'Method not allowed, try GET.'
       }, 404
-  except:
+  except Exception as e:
     return {
-        'message': 'Unexpected error.'
+        'message': f'Unexpected error. {str(e)}'
       }
   finally:
     cursor.close()
