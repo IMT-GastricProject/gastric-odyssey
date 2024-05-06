@@ -13,8 +13,12 @@ def createUser():
 
       user = request.get_json()
 
-      query = """INSERT INTO users (id, username, email, password, type ) VALUES (%s, %s, %s, %s, %s)"""
-      data = (str(uuid.uuid4()), user['username'], user['email'], user['password'], user['type']) # 0 é aluno, 1 é professor.
+      if str(user['email']).lower().split('@')[1] == 'jpiaget.pro.br':
+        query = """INSERT INTO users (id, username, email, password, type ) VALUES (%s, %s, %s, %s, %s)"""
+        data = (str(uuid.uuid4()), user['username'], user['email'], user['password'], 1) # 0 é aluno, 1 é professor.
+      else:
+        query = """INSERT INTO users (id, username, email, password, type ) VALUES (%s, %s, %s, %s, %s)"""
+        data = (str(uuid.uuid4()), user['username'], user['email'], user['password'], 0) # 0 é aluno, 1 é professor.
 
       cursor.execute(query,data)
       db_con.commit()

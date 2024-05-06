@@ -16,8 +16,8 @@ def getSpecificUser(id):
       user = cursor.fetchone()
 
       if user:
-        user_id, username, password, type = user
-        result = { user_id: { "username": username, "password": password, "type": type } }
+        user_id, username, email, password, type = user
+        result = { user_id: { "username": username, "email": email,"password": password, "type": type } }
         return jsonify({ "user": result }), 200
       else:
         return {
