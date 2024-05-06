@@ -1,6 +1,5 @@
-from flask import Blueprint, request, jsonify
-from utils.dbConnection import db_connection
-import uuid
+from flask import Blueprint, request
+from repositories.UserRepository import UserRepository
 
 create_user = Blueprint('create_user', __name__)
 
@@ -8,21 +7,10 @@ create_user = Blueprint('create_user', __name__)
 def createUser():
   try:
     if request.method == 'POST':
-      db_con = db_connection()
-      cursor = db_con.cursor(buffered=True)
-
       user = request.get_json()
-      username_nospaces = str(user['username']).lower().replace(" ", "")
       
-      if str(user['email']).lower().split('@')[1] == 'jpiaget.pro.br':
-        query = """INSERT INTO users (id, username, email, password, type ) VALUES (%s, %s, %s, %s, %s)"""
-        data = (str(uuid.uuid4()), username_nospaces, user['email'], user['password'], 1) # 0 é aluno, 1 é professor.
-      else:
-        query = """INSERT INTO users (id, username, email, password, type ) VALUES (%s, %s, %s, %s, %s)"""
-        data = (str(uuid.uuid4()), username_nospaces, user['email'], user['password'], 0) # 0 é aluno, 1 é professor.
-
-      cursor.execute(query,data)
-      db_con.commit()
+      user_repository = UserRepository()
+      user_repository.createUser(user["username"], user["email"], user["password"])
 
       return {
         'message': 'User created successfully.',
@@ -38,5 +26,4 @@ def createUser():
     }, 500
   finally:
     #fecha o cursor e a conexão
-    cursor.close()
-    db_con.close()
+    user_repository.closeConnection()

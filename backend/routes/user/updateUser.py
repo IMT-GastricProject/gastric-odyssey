@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from utils.dbConnection import db_connection
+from repositories.UserRepository import UserRepository
 
 update_user = Blueprint('update_user', __name__)
 
@@ -7,41 +7,9 @@ update_user = Blueprint('update_user', __name__)
 def updateUser(id):
   try:
     if request.method == 'PUT':
-      db_con = db_connection()
-      cursor = db_con.cursor(buffered=True)
-
       user_input = request.get_json()
-      username_nospaces = str(user_input['username']).lower().replace(" ", "")
-
-      data = {}
-      query = "UPDATE users SET "
-
-      if 'username' in user_input:
-        query += "username = %s, "
-        data['username'] = username_nospaces
-
-      if 'email' in user_input:
-        query += "email = %s, "
-        data['email'] = user_input['email']
-
-      if 'password' in user_input:
-        query += "password = %s, "
-        data['password'] = user_input['password']
-
-      if 'type' in user_input:
-        query += "type = %s, "
-        data['type'] = user_input['type']
-        
-
-      query = query.rstrip(', ')
-      query += " WHERE id = %s"
-      data['id'] = id
-
-      cursor.execute(query, tuple(data.values()))
-      db_con.commit()
-
-      cursor.execute("SELECT * FROM users WHERE id = %s", (id,))
-      user = cursor.fetchone()
+      user_repository = UserRepository()
+      user = user_repository.updateUser(id, user_input)
 
       if user:
         username, email, password, type = user[1], user[2], user[3], user[4]
@@ -60,6 +28,5 @@ def updateUser(id):
         'message': f'Unexpected error. {str(e)}'
       }
   finally:
-    cursor.close()
-    db_con.close()
+    user_repository.closeConnection()
 

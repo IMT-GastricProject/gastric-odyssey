@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from utils.dbConnection import db_connection
+from repositories.UserRepository import UserRepository
 
 get_all_users = Blueprint('get_all_users', __name__)
 
@@ -7,13 +7,8 @@ get_all_users = Blueprint('get_all_users', __name__)
 def getAllUsers():
   try:
     if request.method == 'GET':
-      db_con = db_connection()
-      cursor = db_con.cursor(buffered=True)
-      
-      query = """SELECT id, username, email, password, type FROM users"""
-      cursor.execute(query)
-
-      users = cursor.fetchall()
+      user_repository = UserRepository()
+      users = user_repository.getAllUsers()
       
       result = {}
       for user in users:
@@ -30,5 +25,4 @@ def getAllUsers():
       'message': f'Unexpected error. {str(e)}'
     }
   finally:
-    cursor.close()
-    db_con.close()
+    user_repository.closeConnection()

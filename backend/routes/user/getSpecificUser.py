@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from utils.dbConnection import db_connection
+from repositories.UserRepository import UserRepository
 
 get_specific_user = Blueprint('get_specific_user', __name__)
 
@@ -7,13 +7,8 @@ get_specific_user = Blueprint('get_specific_user', __name__)
 def getSpecificUser(id):
   try:
     if request.method == 'GET':
-      db_con = db_connection()
-      cursor = db_con.cursor(buffered=True)
-      
-      query = """SELECT id, username, email, password, type FROM users WHERE id = %s"""
-      cursor.execute(query, (id,))
-      
-      user = cursor.fetchone()
+      user_repository = UserRepository()
+      user = user_repository.getSpecificUser(id)
 
       if user:
         user_id, username, email, password, type = user
@@ -32,5 +27,4 @@ def getSpecificUser(id):
         'message': f'Unexpected error. {str(e)}'
       }
   finally:
-    cursor.close()
-    db_con.close()
+    user_repository.closeConnection()

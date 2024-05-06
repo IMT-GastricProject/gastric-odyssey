@@ -1,5 +1,5 @@
-from flask import Blueprint, request, jsonify
-from utils.dbConnection import db_connection
+from flask import Blueprint, request
+from repositories.UserRepository import UserRepository
 
 delete_user = Blueprint('delete_user', __name__)
 
@@ -7,15 +7,10 @@ delete_user = Blueprint('delete_user', __name__)
 def deleteUser(id): 
   try:
     if request.method == 'DELETE':
-      db_con = db_connection()
-      cursor = db_con.cursor(buffered=True)
+      user_repository = UserRepository()
+      rowcount = user_repository.deleteUser(id)
       
-      query = """DELETE FROM users WHERE id=%s"""
-      cursor.execute(query, (str(id),))
-      
-      db_con.commit()
-      
-      if cursor.rowcount:
+      if rowcount:
         return {
           'message': 'User successfully deleted'
         }, 200
@@ -32,5 +27,4 @@ def deleteUser(id):
         'message': f'Unexpected error. {str(e)}'
       }
   finally:
-    cursor.close()
-    db_con.close()
+    user_repository.closeConnection()
