@@ -19,6 +19,10 @@ def updateUser(id):
         query += "username = %s, "
         data['username'] = user_input['username']
 
+      if 'email' in user_input:
+        query += "email = %s, "
+        data['email'] = user_input['email']
+
       if 'password' in user_input:
         query += "password = %s, "
         data['password'] = user_input['password']
@@ -26,6 +30,7 @@ def updateUser(id):
       if 'type' in user_input:
         query += "type = %s, "
         data['type'] = user_input['type']
+        
 
       query = query.rstrip(', ')
       query += " WHERE id = %s"
@@ -38,8 +43,8 @@ def updateUser(id):
       user = cursor.fetchone()
 
       if user:
-        username, password, type = user[1], user[2], user[3]
-        result = { id: { "username": username, "password": password, "type": type } }
+        username, email, password, type = user[1], user[2], user[3], user[4]
+        result = { id: { "username": username, "email": email, "password": password, "type": type } }
         return jsonify({ "user": result }), 200
       else:
         return {

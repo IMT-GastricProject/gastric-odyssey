@@ -10,7 +10,7 @@ def getSpecificUser(id):
       db_con = db_connection()
       cursor = db_con.cursor(buffered=True)
       
-      query = """SELECT id, username, password, type FROM users WHERE id = %s"""
+      query = """SELECT id, username, email, password, type FROM users WHERE id = %s"""
       cursor.execute(query, (id,))
       
       user = cursor.fetchone()

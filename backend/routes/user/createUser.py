@@ -13,8 +13,8 @@ def createUser():
 
       user = request.get_json()
 
-      query = """INSERT INTO users (id, username, password, type ) VALUES (%s, %s, %s, %s)"""
-      data = (str(uuid.uuid4()), user['username'], user['password'], user['type']) # 0 é aluno, 1 é professor.
+      query = """INSERT INTO users (id, username, email, password, type ) VALUES (%s, %s, %s, %s, %s)"""
+      data = (str(uuid.uuid4()), user['username'], user['email'], user['password'], user['type']) # 0 é aluno, 1 é professor.
 
       cursor.execute(query,data)
       db_con.commit()
