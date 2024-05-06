@@ -11,13 +11,14 @@ def updateUser(id):
       cursor = db_con.cursor(buffered=True)
 
       user_input = request.get_json()
+      username_nospaces = str(user_input['username']).lower().replace(" ", "")
 
       data = {}
       query = "UPDATE users SET "
 
       if 'username' in user_input:
         query += "username = %s, "
-        data['username'] = user_input['username']
+        data['username'] = username_nospaces
 
       if 'email' in user_input:
         query += "email = %s, "
