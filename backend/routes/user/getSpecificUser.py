@@ -11,8 +11,8 @@ def getSpecificUser(id):
       user = user_repository.getSpecificUser(id)
 
       if user:
-        user_id, username, email, password, type = user
-        result = { user_id: { "username": username, "email": email,"password": password, "type": type } }
+        user_id, username, email, password, type, verification_code, isVerified = user
+        result = { user_id: { "username": username, "email": email,"password": password, "type": type, "verification_code": verification_code, "isVerified": isVerified} }
         return jsonify({ "user": result }), 200
       else:
         return {

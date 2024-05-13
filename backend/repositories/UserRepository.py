@@ -1,5 +1,6 @@
 from utils.dbConnection import db_connection
 from uuid import uuid4
+from utils.generateCode import generateCode
 
 class UserRepository:
   def __init__(self):
@@ -9,17 +10,19 @@ class UserRepository:
   def createUser(self, username, email, password):
     username_nospaces = str(username).lower().replace(" ", "")
       
+    user_code = generateCode()
+
     if str(email).lower().split('@')[1] == 'jpiaget.pro.br':
-      query = """INSERT INTO users (id, username, email, password, type ) VALUES (%s, %s, %s, %s, %s)"""
-      data = (str(uuid4()), username_nospaces, email, password, 1) # 0 é aluno, 1 é professor.
+      query = """INSERT INTO users (id, username, email, password, type, verification_code, isVerified ) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+      data = (str(uuid4()), username_nospaces, email, password, 1, user_code, 0) # Type 0 é aluno, 1 é professor. isVerified 0 é False e 1 é True.
     else:
-      query = """INSERT INTO users (id, username, email, password, type ) VALUES (%s, %s, %s, %s, %s)"""
-      data = (str(uuid4()), username_nospaces, email, password, 0) # 0 é aluno, 1 é professor.
+      query = """INSERT INTO users (id, username, email, password, type, verification_code, isVerified ) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+      data = (str(uuid4()), username_nospaces, email, password, 0, user_code, 0) # Type 0 é aluno, 1 é professor. isVerified 0 é False e 1 é True.
     
     self.cursor.execute(query,data)
     self.db_con.commit()
 
-    return
+    return user_code
   
   def deleteUser(self, id):
     query = """DELETE FROM users WHERE id=%s"""
@@ -29,17 +32,29 @@ class UserRepository:
     return self.cursor.rowcount
   
   def getAllUsers(self):
-    query = """SELECT id, username, email, password, type FROM users"""
+    query = """SELECT * FROM users"""
     self.cursor.execute(query)
 
     return self.cursor.fetchall()
 
   def getSpecificUser(self, id):
-    query = """SELECT id, username, email, password, type FROM users WHERE id = %s"""
+    query = """SELECT * FROM users WHERE id = %s"""
     self.cursor.execute(query, (id,))
 
     return self.cursor.fetchone()
-
+  
+  def verifyUser(self, id):
+    self.cursor.execute("SELECT * FROM users WHERE id = %s", (id,))
+    user = self.cursor.fetchone()
+    if user:
+      query = """UPDATE users SET isVerified = %s WHERE id = %s AND isVerified != %s"""
+      data = (1,id,1)
+      self.cursor.execute(query, data)
+      self.db_con.commit()
+      return True
+    else:
+      return False
+  
   def updateUser(self, id, user_input):
     data = {}
     query = "UPDATE users SET "

@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 from repositories.UserRepository import UserRepository
+from utils.emailSender import emailSender
 
 create_user = Blueprint('create_user', __name__)
 
@@ -10,12 +11,15 @@ def createUser():
       user = request.get_json()
       
       user_repository = UserRepository()
-      user_repository.createUser(user["username"], user["email"], user["password"])
+      code = user_repository.createUser(user["username"], user["email"], user["password"])
+      
+      emailSender(user["email"], str(code))
 
       return {
         'message': 'User created successfully.',
         'user': user
       }, 201
+    
     else:
       return {
         'message': 'Method not allowed, try POST.'

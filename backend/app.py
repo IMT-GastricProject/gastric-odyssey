@@ -1,10 +1,12 @@
 from flask import Flask
+from utils.emailSender import mail
 
 from routes.user.createUser import create_user
 from routes.user.getAllUsers import get_all_users
 from routes.user.getSpecificUser import get_specific_user
 from routes.user.deleteUser import delete_user
 from routes.user.updateUser import update_user
+from routes.user.verifyUser import verify_user
 
 from routes.questions.createQuestion import create_question
 from routes.questions.deleteQuestion import delete_question
@@ -19,6 +21,16 @@ from routes.questions.answers.updateAnswer import update_answer
 
 app = Flask(__name__)
 
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'gastricodyssey@gmail.com'
+app.config['MAIL_PASSWORD'] = 'oawf mfec xuxg enms'
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USE_TSL'] = False
+
+
+mail.init_app(app)
+
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
@@ -29,6 +41,7 @@ app.register_blueprint(get_all_users)
 app.register_blueprint(get_specific_user)
 app.register_blueprint(delete_user)
 app.register_blueprint(update_user)
+app.register_blueprint(verify_user)
 
 # questions routes
 app.register_blueprint(create_question)
