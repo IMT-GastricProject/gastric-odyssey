@@ -1,4 +1,4 @@
-from utils.dbConnection import db_connection
+from services.dbConnection import db_connection
 from uuid import uuid4
 from utils.generateCode import generateCode
 
@@ -87,6 +87,22 @@ class UserRepository:
     user = self.cursor.fetchone()
 
     return user
+
+  def addPointsToUser(self, user_id, points):
+    query = "UPDATE users SET points = points + %s WHERE id = %s"
+    data = (points, user_id)
+    self.cursor.execute(query, data)
+    self.db_con.commit()
+
+    return
+
+  def removePointsFromUser(self, user_id, points):
+    query = "UPDATE users SET points = points - %s WHERE id = %s"
+    data = (points, user_id)
+    self.cursor.execute(query, data)
+    self.db_con.commit()
+
+    return
 
   def closeConnection(self):
     self.cursor.close()
