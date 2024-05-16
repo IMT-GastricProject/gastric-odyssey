@@ -16,20 +16,15 @@ class QuestionRepository:
     return
   
   def getSpecificQuestion(self, id):
-    query = """SELECT id, title, content FROM questions WHERE id = %s"""
-    query2 = """SELECT content FROM answers WHERE question_id = %s"""
+    query = """SELECT * FROM questions WHERE id = %s"""
     self.cursor.execute(query, (id,))
 
     question = self.cursor.fetchone()
 
-    self.cursor.execute(query2, (id,))
-
-    answer = self.cursor.fetchmany()
-
-    return question, answer
+    return question
   
   def getAllQuestions(self):
-    query = """SELECT id, title, content FROM questions"""
+    query = """SELECT id, title, correct_answer, content FROM questions"""
     self.cursor.execute(query)
 
     return self.cursor.fetchall()

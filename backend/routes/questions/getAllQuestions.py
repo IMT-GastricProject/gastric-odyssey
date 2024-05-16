@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from repositories.QuestionRepository import QuestionRepository
-
+from repositories.AnswerRepository import AnswerRepository
 get_all_questions = Blueprint('get_all_questions', __name__)
 
 @get_all_questions.route('/questions', methods=['GET'])
@@ -9,11 +9,16 @@ def getAllQuestions():
     if request.method == 'GET':
       question_repository = QuestionRepository()
       questions = question_repository.getAllQuestions()
-      
+      answers_repository = AnswerRepository()
       result = {}
       for question in questions:
-        id, title, content = question
-        result[id] = { "title": title, "content": content }
+        all_answers = []
+        questionid, title,  correct_answer, content = question
+        answers = answers_repository.getQuestionAnswers(questionid)
+        for answer in answers:
+          answer_id, idquestion_answer, contentanswer = answer
+          all_answers.append({"answer_id":  answer_id, "content": contentanswer})
+        result[questionid] = { "title": title, "content": content, "correct_answer_id": correct_answer, "answers": all_answers }
 
       return jsonify({ "questions": result }), 200
     else:
