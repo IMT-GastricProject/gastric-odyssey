@@ -19,7 +19,7 @@ class Player(pygame.sprite.Sprite):
 
     #função para facilitar a mudança da imagem ao mudar a direção do sprite
     def directionChange(self, sprite_img):
-        self.image = pygame.image.load(f'./assets/{sprite_img}.png').convert_alpha()
+        self.image = pygame.image.load(f'./assets/player/{sprite_img}.png').convert_alpha()
 
     def input(self):
         #detecta caso uma tecla seja pressionada

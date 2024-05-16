@@ -1,8 +1,8 @@
 import pygame
-from settings import WORLD_MAP, TILESIZE
+from settings import TILESIZE
 from tile import Tile
 from player import Player
-
+from utils.import_csv_layout import import_csv_layout
 class Level:
     def __init__(self):
         self.display_surface = pygame.display.get_surface()
@@ -13,14 +13,23 @@ class Level:
 
 # gerar o mapa
     def create_map(self):
-        for row_index, row in enumerate(WORLD_MAP):
-            for col_index, col in enumerate(row):
-                x = col_index * TILESIZE
-                y = row_index * TILESIZE
-                if col == 'x':
-                    Tile((x,y), [self.visible_sprites,self.obstacles_sprites])
-                elif col == 'p':
-                    self.player = Player((x, y), [self.visible_sprites], self.obstacles_sprites)
+        layouts = {
+            'boundary': import_csv_layout('assets/csv/map_blocos.csv'),
+            'teeth': import_csv_layout('assets/csv/map_dentes.csv')
+        }
+
+        for style,layout in layouts.items():
+            for row_index,row in enumerate(layout):
+                for col_index, col in enumerate(row):
+                    if col != '-1':
+                        x = col_index * TILESIZE
+                        y = row_index * TILESIZE
+                        if style == 'boundary':
+                            Tile((x,y), [self.visible_sprites,self.obstacles_sprites], 'visible', pygame.image.load('assets/textures/skin.png'))
+                        if style == 'teeth':
+                            Tile((x,y), [self.obstacles_sprites], 'invisible', pygame.image.load('assets/textures/tooth.pngp))
+
+        self.player = Player((900,900), [self.visible_sprites], self.obstacles_sprites)
 
 #movimentação do player
     def run(self):
@@ -46,6 +55,6 @@ class Camera(pygame.sprite.Group):
         floor_offset_pos = self.floor_rect.topleft - self.offset
         self.display_surface.blit(self.floor_surface, floor_offset_pos)
 
-        for sprite in self.sprites():
+        for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image,offset_pos)
