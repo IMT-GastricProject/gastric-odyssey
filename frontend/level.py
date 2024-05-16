@@ -27,7 +27,7 @@ class Level:
                         if style == 'boundary':
                             Tile((x,y), [self.visible_sprites,self.obstacles_sprites], 'visible', pygame.image.load('assets/textures/skin.png'))
                         if style == 'teeth':
-                            Tile((x,y), [self.obstacles_sprites], 'invisible', pygame.image.load('assets/textures/tooth.pngp))
+                            Tile((x,y), [self.obstacles_sprites], 'invisible', pygame.image.load('assets/textures/tooth.png'))
 
         self.player = Player((900,900), [self.visible_sprites], self.obstacles_sprites)
 
