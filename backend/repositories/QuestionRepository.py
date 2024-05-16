@@ -1,4 +1,4 @@
-from utils.dbConnection import db_connection
+from services.dbConnection import db_connection
 from uuid import uuid4
 
 class QuestionRepository:
