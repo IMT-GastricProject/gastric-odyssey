@@ -36,10 +36,10 @@ class AnswerRepository:
     self.cursor.execute(query, tuple(data.values()))
     self.db_con.commit()
 
-    return self.cursor.rowcount
+    return data
 
   def getQuestionAnswers(self, question_id):
-    query = """SELECT id, content FROM answers WHERE question_id = %s"""
+    query = """SELECT * FROM answers WHERE question_id = %s"""
     self.cursor.execute(query, (question_id,))
 
     return self.cursor.fetchall()

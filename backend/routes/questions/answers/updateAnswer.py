@@ -12,9 +12,9 @@ def updateAnswer(answer_id):
       answer = answer_repository.updateAnswer(answer_id, answer_input)
 
       if answer:
-        title, content = answer[1], answer[2], answer[3], answer[4]
-        result = { answer_id: { "title": title, "content": content } }
-        return jsonify({ "answer": result }), 200
+        content = answer['content']
+        result = {'content': content }
+        return jsonify({ f'{answer_id}': result }), 200
       else:
         return {
           'message': 'Answer not found.'
