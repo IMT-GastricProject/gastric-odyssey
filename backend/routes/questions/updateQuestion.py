@@ -12,8 +12,8 @@ def updateUser(question_id):
       question = question_repository.updateQuestion(question_id, question_input)
 
       if question:
-        result = { question_id: { "title": question['title'], "content": question['content']} }
-        return jsonify({ "question": result }), 200
+        result = { question_id: question } 
+        return result, 200
       else:
         return {
           'message': 'Question not found.'

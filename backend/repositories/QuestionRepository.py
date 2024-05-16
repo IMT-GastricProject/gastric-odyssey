@@ -48,6 +48,10 @@ class QuestionRepository:
       query += "content = %s, "
       data['content'] = question_input['content']
 
+    if 'correct_answer' in question_input:
+      query += "correct_answer = %s, "
+      data['correct_answer'] = question_input['correct_answer']
+
     query = query.rstrip(', ')
 
     query += " WHERE id = %s"
