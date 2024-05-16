@@ -12,8 +12,7 @@ def updateUser(question_id):
       question = question_repository.updateQuestion(question_id, question_input)
 
       if question:
-        title, content = question
-        result = { question_id: { "title": title, "content": content } }
+        result = { question_id: { "title": question['title'], "content": question['content']} }
         return jsonify({ "question": result }), 200
       else:
         return {

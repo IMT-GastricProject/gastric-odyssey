@@ -53,13 +53,15 @@ class QuestionRepository:
       query += "content = %s, "
       data['content'] = question_input['content']
 
-    query = query[:-2] + " WHERE id = %s"
+    query = query.rstrip(', ')
+
+    query += " WHERE id = %s"
     data['id'] = id
 
     self.cursor.execute(query, tuple(data.values()))
     self.db_con.commit()
 
-    return self.cursor.fetchone()
+    return data
   
   def closeConnection(self):
     self.cursor.close()

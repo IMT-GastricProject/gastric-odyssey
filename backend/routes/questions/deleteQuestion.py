@@ -3,7 +3,7 @@ from repositories.QuestionRepository import QuestionRepository
 
 delete_question = Blueprint('delete_question', __name__)
 
-@delete_question.route('/question/delete/<question_id>', methods=['DELETE'])
+@delete_question.route('/questions/delete/<question_id>', methods=['DELETE'])
 def deleteQuestion(question_id): 
   try:
     if request.method == 'DELETE':
