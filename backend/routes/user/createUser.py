@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from repositories.UserRepository import UserRepository
-from utils.emailSender import emailSender
+from services.emailSender import emailSender
 
 create_user = Blueprint('create_user', __name__)
 

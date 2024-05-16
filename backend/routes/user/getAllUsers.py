@@ -12,8 +12,8 @@ def getAllUsers():
       
       result = {}
       for user in users:
-        user_id, username, email, password, type, verification_code, isVerified = user
-        result[user_id] = { "username": username,"email": email, "password": password, "type": type, "verification_code": verification_code, "isVerified": isVerified }
+        user_id, username, email, password, type, verification_code, isVerified, points = user
+        result[user_id] = { "username": username,"email": email, "password": password, "type": type, "verification_code": verification_code, "isVerified": isVerified, "points": points }
 
       return jsonify({ "users": result }), 200
     else:

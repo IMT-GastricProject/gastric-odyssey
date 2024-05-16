@@ -1,5 +1,5 @@
 from flask import Flask
-from utils.emailSender import mail
+from services.emailSender import mail
 
 from routes.user.createUser import create_user
 from routes.user.getAllUsers import get_all_users

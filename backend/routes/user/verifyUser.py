@@ -11,7 +11,7 @@ def verifyUser(code, id):
       user_select = user_repository.getSpecificUser(id)
       
       if user_select:
-        user_id, username, email, password, type, verification_code, isVerified = user_select
+        user_id, username, email, password, type, verification_code, isVerified, points = user_select
         if int(code) == verification_code:
           user = user_repository.verifyUser(id)
 
