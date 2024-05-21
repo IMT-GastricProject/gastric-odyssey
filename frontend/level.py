@@ -8,14 +8,14 @@ class Level:
         self.display_surface = pygame.display.get_surface()
         self.visible_sprites = Camera()
         self.obstacles_sprites = pygame.sprite.Group()
-
         self.create_map()
 
 # gerar o mapa
     def create_map(self):
         layouts = {
             'boundary': import_csv_layout('assets/csv/map_blocos.csv'),
-            'teeth': import_csv_layout('assets/csv/map_dentes.csv')
+            'teeth': import_csv_layout('assets/csv/map_dentes.csv'),
+            'door': import_csv_layout('assets/csv/map_portas.csv')
         }
 
         for style,layout in layouts.items():
@@ -28,7 +28,9 @@ class Level:
                             Tile((x,y), [self.visible_sprites,self.obstacles_sprites], 'visible', pygame.image.load('assets/textures/skin.png'))
                         if style == 'teeth':
                             Tile((x,y), [self.obstacles_sprites], 'invisible', pygame.image.load('assets/textures/tooth.png'))
-
+                        if style == 'door':
+                            Tile((x,y), [self.obstacles_sprites], 'invisible', pygame.image.load('assets/textures/door.png'))
+                            
         self.player = Player((900,900), [self.visible_sprites], self.obstacles_sprites)
 
 #movimentação do player
