@@ -8,6 +8,14 @@ class Level:
         self.display_surface = pygame.display.get_surface()
         self.visible_sprites = Camera()
         self.obstacles_sprites = pygame.sprite.Group()
+        
+        #liberar portas
+        self.open_door = {
+            'laringe': False,
+            'faringe': False,
+            'intestino_delgado': False
+        }
+
         self.create_map()
 
 # gerar o mapa
@@ -15,7 +23,9 @@ class Level:
         layouts = {
             'boundary': import_csv_layout('assets/csv/map_blocos.csv'),
             'teeth': import_csv_layout('assets/csv/map_dentes.csv'),
-            'door': import_csv_layout('assets/csv/map_portas.csv')
+            'laringe': import_csv_layout('assets/csv/map_doors_laringe.csv'),
+            'faringe': import_csv_layout('assets/csv/map_doors_faringe.csv'),
+            'intestino_delgado': import_csv_layout('assets/csv/map_doors_intestino_delgado.csv')
         }
 
         for style,layout in layouts.items():
@@ -27,11 +37,30 @@ class Level:
                         if style == 'boundary':
                             Tile((x,y), [self.visible_sprites,self.obstacles_sprites], 'visible', pygame.image.load('assets/textures/skin.png'))
                         if style == 'teeth':
-                            Tile((x,y), [self.obstacles_sprites], 'invisible', pygame.image.load('assets/textures/tooth.png'))
-                        if style == 'door':
-                            Tile((x,y), [self.obstacles_sprites], 'invisible', pygame.image.load('assets/textures/door.png'))
+                            Tile((x,y), [self.obstacles_sprites], 'visible', pygame.image.load('assets/textures/tooth.png'))
+
+                        if style == 'laringe':
+                                if self.open_door['laringe'] == False:
+                                    Tile((x,y), [self.visible_sprites,self.obstacles_sprites], 'visible', pygame.image.load('assets/textures/door.png'))
+                                else:
+                                    Tile((x,y), [self.visible_sprites], 'visible', pygame.image.load('assets/textures/door_opened.png'))
+
+                        if style == 'faringe':
+                                if self.open_door['faringe'] == False:
+                                    Tile((x,y), [self.visible_sprites,self.obstacles_sprites], 'visible', pygame.image.load('assets/textures/door.png'))
+                                else:
+                                    Tile((x,y), [self.visible_sprites], 'visible', pygame.image.load('assets/textures/door_opened.png'))
+
+                        if style == 'intestino_delgado':
+                                if self.open_door['intestino_delgado'] == False:
+                                    Tile((x,y), [self.visible_sprites,self.obstacles_sprites], 'visible', pygame.image.load('assets/textures/door_rotated.png'))
+                                else:
+                                    Tile((x,y), [self.visible_sprites], 'visible', pygame.image.load('assets/textures/door_opened_rotated.png'))
+
+
                             
         self.player = Player((900,900), [self.visible_sprites], self.obstacles_sprites)
+        
 
 #movimentação do player
     def run(self):

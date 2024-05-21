@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
         #define a direção como um vetor de duas dimensões (x,y)
         self.direction = pygame.math.Vector2()
         #define a velocidade da qual o sprite se movimenta, pois é multiplicado pelo valor do vetor direction
-        self.speed = 5
+        self.speed = 10
         #define o obstacle_sprites que armazena os obstáculos que o player colide, que é passado como argumento de Player
         self.obstacle_sprites = obstacle_sprites
 
