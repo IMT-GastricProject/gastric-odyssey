@@ -8,6 +8,7 @@ class Level:
         self.display_surface = pygame.display.get_surface()
         self.visible_sprites = Camera()
         self.obstacles_sprites = pygame.sprite.Group()
+        self.pressure_plates = pygame.sprite.Group()
         
         #liberar portas
         self.open_door = {
@@ -47,7 +48,7 @@ class Level:
 
                         if style == 'faringe':
                                 if self.open_door['faringe'] == False:
-                                    Tile((x,y), [self.visible_sprites,self.obstacles_sprites], 'visible', pygame.image.load('assets/textures/door.png'))
+                                    Tile((x,y), [self.visible_sprites,self.obstacles_sprites, self.pressure_plates], 'visible', pygame.image.load('assets/textures/door.png'))
                                 else:
                                     Tile((x,y), [self.visible_sprites], 'visible', pygame.image.load('assets/textures/door_opened.png'))
 
@@ -59,7 +60,7 @@ class Level:
 
 
                             
-        self.player = Player((900,900), [self.visible_sprites], self.obstacles_sprites)
+        self.player = Player((900,900), [self.visible_sprites], self.obstacles_sprites, self.pressure_plates)
         
 
 #movimentação do player
