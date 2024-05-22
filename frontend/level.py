@@ -10,6 +10,7 @@ class Level:
         self.obstacles_sprites = pygame.sprite.Group()
         self.pressure_plates = pygame.sprite.Group()
         self.screen = screen
+        self.player_pos = (900,900)
         #liberar portas
         self.open_door = {
             'laringe': False,
@@ -18,6 +19,8 @@ class Level:
         }
 
         self.create_map()
+
+
 
 # gerar o mapa
     def create_map(self):
@@ -36,33 +39,41 @@ class Level:
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
                         if style == 'boundary':
-                            Tile((x,y), [self.visible_sprites,self.obstacles_sprites], 'visible', pygame.image.load('assets/textures/skin.png'))
+                            Tile((x,y), [self.visible_sprites,self.obstacles_sprites], 'boundary', pygame.image.load('assets/textures/skin.png'))
                         if style == 'teeth':
-                            Tile((x,y), [self.obstacles_sprites], 'visible', pygame.image.load('assets/textures/tooth.png'))
+                            Tile((x,y), [self.obstacles_sprites], 'teeth', pygame.image.load('assets/textures/tooth.png'))
 
                         if style == 'laringe':
                                 if self.open_door['laringe'] == False:
-                                    Tile((x,y), [self.visible_sprites,self.obstacles_sprites], 'visible', pygame.image.load('assets/textures/door.png'))
+                                    Tile((x,y), [self.visible_sprites,self.obstacles_sprites, self.pressure_plates], 'laringe', pygame.image.load('assets/textures/door.png'))
                                 else:
-                                    Tile((x,y), [self.visible_sprites], 'visible', pygame.image.load('assets/textures/door_opened.png'))
+                                    Tile((x,y), [self.visible_sprites], 'laringe', pygame.image.load('assets/textures/door_opened.png'))
 
                         if style == 'faringe':
                                 if self.open_door['faringe'] == False:
-                                    Tile((x,y), [self.visible_sprites,self.obstacles_sprites, self.pressure_plates], 'visible', pygame.image.load('assets/textures/door.png'))
+                                    Tile((x,y), [self.visible_sprites,self.obstacles_sprites, self.pressure_plates], 'faringe', pygame.image.load('assets/textures/door.png'))
                                 else:
-                                    Tile((x,y), [self.visible_sprites], 'visible', pygame.image.load('assets/textures/door_opened.png'))
+                                    Tile((x,y), [self.visible_sprites], 'faringe', pygame.image.load('assets/textures/door_opened.png'))
 
                         if style == 'intestino_delgado':
                                 if self.open_door['intestino_delgado'] == False:
-                                    Tile((x,y), [self.visible_sprites,self.obstacles_sprites], 'visible', pygame.image.load('assets/textures/door_rotated.png'))
+                                    Tile((x,y), [self.visible_sprites,self.obstacles_sprites], 'intestino_delgado', pygame.image.load('assets/textures/door_rotated.png'))
                                 else:
-                                    Tile((x,y), [self.visible_sprites], 'visible', pygame.image.load('assets/textures/door_opened_rotated.png'))
+                                    Tile((x,y), [self.visible_sprites], 'intestino_delgado', pygame.image.load('assets/textures/door_opened_rotated.png'))
 
 
                             
-        self.player = Player((900,900), [self.visible_sprites], self.obstacles_sprites, self.pressure_plates, self.screen)
+        self.player = Player(self.player_pos, [self.visible_sprites], self.obstacles_sprites, self.pressure_plates, self.screen,self)
         
+    def update_map(self):
+        self.visible_sprites = Camera()
+        self.obstacles_sprites = pygame.sprite.Group()
+        self.pressure_plates = pygame.sprite.Group()
 
+        self.player_pos = self.player.rect.topleft
+
+        self.create_map()
+        
 #movimentação do player
     def run(self):
         self.visible_sprites.custom_draw(self.player)

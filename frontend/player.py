@@ -3,7 +3,7 @@ from settings import *
 from question_box import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos,groups, obstacle_sprites, pressure_plate,screen):
+    def __init__(self,pos,groups, obstacle_sprites, pressure_plate,screen,level):
         super().__init__(groups)
         #define a imagem inicial do sprite do player, ela é modificada a cada mudança de direção, usando o método directionChange 
         self.directionChange('player_right')
@@ -19,6 +19,10 @@ class Player(pygame.sprite.Sprite):
         self.obstacle_sprites = obstacle_sprites
         self.pressure_plate = pressure_plate
         self.screen = screen
+        self.level = level
+        self.on_plate = False
+        self.questions = requests.get('http://127.0.0.1:5000/questions').json()['questions'].values()
+
     #função para facilitar a mudança da imagem ao mudar a direção do sprite
     def directionChange(self, sprite_img):
         self.image = pygame.image.load(f'./assets/player/{sprite_img}.png').convert_alpha()
@@ -80,9 +84,16 @@ class Player(pygame.sprite.Sprite):
                         self.hitbox.top = sprite.hitbox.bottom
 
     def pressure_plate_collision(self):
+        touching = False
         for sprite in self.pressure_plate:
             if sprite.hitbox.colliderect(self.rect):
-                box = Question_Box(self.screen)
+                touching = True
+                if not self.on_plate:
+                    box = Question_Box(self.screen, self.questions,self.level,sprite.sprite_type)
+                    box.display()
+                    self.on_plate = True
+        if not touching:
+            self.on_plate = False
 
     def update(self):
         self.input()
