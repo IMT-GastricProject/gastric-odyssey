@@ -10,7 +10,7 @@ class Game:
         self.screen = pygame.display.set_mode(SCREEN_SIZE, pygame.RESIZABLE)
         pygame.display.set_caption('Gastric Odyssey')
         self.clock = pygame.time.Clock()
-        self.level = Level()
+        self.level = Level(self.screen)
     def run(self):
         while True:
             for event in pygame.event.get():

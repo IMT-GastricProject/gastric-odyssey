@@ -1,8 +1,9 @@
 import pygame
 from settings import *
+from question_box import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos,groups, obstacle_sprites, pressure_plate):
+    def __init__(self,pos,groups, obstacle_sprites, pressure_plate,screen):
         super().__init__(groups)
         #define a imagem inicial do sprite do player, ela é modificada a cada mudança de direção, usando o método directionChange 
         self.directionChange('player_right')
@@ -13,11 +14,11 @@ class Player(pygame.sprite.Sprite):
         #define a direção como um vetor de duas dimensões (x,y)
         self.direction = pygame.math.Vector2()
         #define a velocidade da qual o sprite se movimenta, pois é multiplicado pelo valor do vetor direction
-        self.speed = 10
+        self.speed = 55
         #define o obstacle_sprites que armazena os obstáculos que o player colide, que é passado como argumento de Player
         self.obstacle_sprites = obstacle_sprites
         self.pressure_plate = pressure_plate
-
+        self.screen = screen
     #função para facilitar a mudança da imagem ao mudar a direção do sprite
     def directionChange(self, sprite_img):
         self.image = pygame.image.load(f'./assets/player/{sprite_img}.png').convert_alpha()
@@ -81,7 +82,7 @@ class Player(pygame.sprite.Sprite):
     def pressure_plate_collision(self):
         for sprite in self.pressure_plate:
             if sprite.hitbox.colliderect(self.rect):
-                print('test')
+                box = Question_Box(self.screen)
 
     def update(self):
         self.input()

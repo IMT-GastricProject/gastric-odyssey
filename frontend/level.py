@@ -4,12 +4,12 @@ from tile import Tile
 from player import Player
 from utils.import_csv_layout import import_csv_layout
 class Level:
-    def __init__(self):
+    def __init__(self, screen):
         self.display_surface = pygame.display.get_surface()
         self.visible_sprites = Camera()
         self.obstacles_sprites = pygame.sprite.Group()
         self.pressure_plates = pygame.sprite.Group()
-        
+        self.screen = screen
         #liberar portas
         self.open_door = {
             'laringe': False,
@@ -60,7 +60,7 @@ class Level:
 
 
                             
-        self.player = Player((900,900), [self.visible_sprites], self.obstacles_sprites, self.pressure_plates)
+        self.player = Player((900,900), [self.visible_sprites], self.obstacles_sprites, self.pressure_plates, self.screen)
         
 
 #movimentação do player
