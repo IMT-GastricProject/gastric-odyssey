@@ -38,6 +38,7 @@ class Level:
                     if col != '-1':
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
+                        
                         if style == 'boundary':
                             Tile((x,y), [self.visible_sprites,self.obstacles_sprites], 'boundary', pygame.image.load('assets/textures/skin.png'))
                         if style == 'teeth':
@@ -57,7 +58,7 @@ class Level:
 
                         if style == 'intestino_delgado':
                                 if self.open_door['intestino_delgado'] == False:
-                                    Tile((x,y), [self.visible_sprites,self.obstacles_sprites], 'intestino_delgado', pygame.image.load('assets/textures/door_rotated.png'))
+                                    Tile((x,y), [self.visible_sprites,self.obstacles_sprites, self.pressure_plates], 'intestino_delgado', pygame.image.load('assets/textures/door_rotated.png'))
                                 else:
                                     Tile((x,y), [self.visible_sprites], 'intestino_delgado', pygame.image.load('assets/textures/door_opened_rotated.png'))
 
