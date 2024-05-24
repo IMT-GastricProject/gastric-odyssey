@@ -5,9 +5,9 @@ verify_user = Blueprint('verify_user', __name__)
 
 @verify_user.route('/users/verify/<code>/<id>', methods=['PATCH'])
 def verifyUser(code, id):
+  user_repository = UserRepository()
   try:
     if request.method == 'PATCH':
-      user_repository = UserRepository()
       user_select = user_repository.getSpecificUser(id)
       
       if user_select:

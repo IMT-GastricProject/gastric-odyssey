@@ -5,9 +5,9 @@ get_question_answers = Blueprint('get_question_answers', __name__)
 
 @get_question_answers.route('/questions/<question_id>/answers', methods=['GET'])
 def getQuestionAnswer(question_id):
+  answer_repository = AnswerRepository()
   try:
     if request.method == 'GET':
-      answer_repository = AnswerRepository()
       answers = answer_repository.getQuestionAnswers(question_id)
       result ={}
       if answers:

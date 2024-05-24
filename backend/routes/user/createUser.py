@@ -6,11 +6,11 @@ create_user = Blueprint('create_user', __name__)
 
 @create_user.route('/users/create', methods=['POST'])
 def createUser():
+  user_repository = UserRepository()
   try:
     if request.method == 'POST':
       user = request.get_json()
       
-      user_repository = UserRepository()
       code = user_repository.createUser(user["username"], user["email"], user["password"])
       
       emailSender(user["email"], str(code))

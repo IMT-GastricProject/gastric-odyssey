@@ -5,9 +5,9 @@ get_all_questions = Blueprint('get_all_questions', __name__)
 
 @get_all_questions.route('/questions', methods=['GET'])
 def getAllQuestions():
+  question_repository = QuestionRepository()
   try:
     if request.method == 'GET':
-      question_repository = QuestionRepository()
       questions = question_repository.getAllQuestions()
       answers_repository = AnswerRepository()
       result = {}

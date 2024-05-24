@@ -5,10 +5,10 @@ update_user = Blueprint('update_user', __name__)
 
 @update_user.route('/users/update/<id>', methods=['PUT'])
 def updateUser(id):
+  user_repository = UserRepository()
   try:
     if request.method == 'PUT':
       user_input = request.get_json()
-      user_repository = UserRepository()
       user = user_repository.updateUser(id, user_input)
 
       if user:

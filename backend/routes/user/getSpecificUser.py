@@ -5,9 +5,9 @@ get_specific_user = Blueprint('get_specific_user', __name__)
 
 @get_specific_user.route('/users/<id>', methods=['GET'])
 def getSpecificUser(id):
+  user_repository = UserRepository()
   try:
     if request.method == 'GET':
-      user_repository = UserRepository()
       user = user_repository.getSpecificUser(id)
 
       if user:

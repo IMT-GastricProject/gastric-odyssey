@@ -5,9 +5,9 @@ delete_answer = Blueprint('delete_answer', __name__)
 
 @delete_answer.route('/questions/<question_id>/answers/delete/<answer_id>', methods=['DELETE'])
 def addQuestionAnswer(question_id, answer_id):
+  answer_repository = AnswerRepository()
   try:
     if request.method == 'DELETE':      
-      answer_repository = AnswerRepository()
       answer_repository.deleteAnswer(answer_id, question_id)
 
       return {

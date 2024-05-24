@@ -5,9 +5,9 @@ delete_user = Blueprint('delete_user', __name__)
 
 @delete_user.route('/users/delete/<id>', methods=['DELETE'])
 def deleteUser(id): 
+  user_repository = UserRepository()
   try:
     if request.method == 'DELETE':
-      user_repository = UserRepository()
       rowcount = user_repository.deleteUser(id)
       
       if rowcount:

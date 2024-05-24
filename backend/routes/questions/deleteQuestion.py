@@ -5,9 +5,9 @@ delete_question = Blueprint('delete_question', __name__)
 
 @delete_question.route('/questions/delete/<question_id>', methods=['DELETE'])
 def deleteQuestion(question_id): 
+  question_repository = QuestionRepository()
   try:
     if request.method == 'DELETE':
-      question_repository = QuestionRepository()
       rowcount = question_repository.deleteQuestion(question_id)
       
       if rowcount:

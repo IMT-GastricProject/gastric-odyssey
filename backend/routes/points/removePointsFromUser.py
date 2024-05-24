@@ -5,9 +5,9 @@ remove_points_from_user = Blueprint('remove_points_from_user', __name__)
 
 @remove_points_from_user.route('/points/remove/<user_id>/<points>', methods=['PATCH'])
 def addPointsToUser(user_id, points):
+  user_repository = UserRepository()
   try:
     if request.method == 'PATCH':
-      user_repository = UserRepository()
       user_repository.removePointsFromUser(user_id, points)
 
       return {

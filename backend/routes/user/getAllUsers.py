@@ -5,9 +5,9 @@ get_all_users = Blueprint('get_all_users', __name__)
 
 @get_all_users.route('/users', methods=['GET'])
 def getAllUsers():
+  user_repository = UserRepository()
   try:
     if request.method == 'GET':
-      user_repository = UserRepository()
       users = user_repository.getAllUsers()
       
       result = {}

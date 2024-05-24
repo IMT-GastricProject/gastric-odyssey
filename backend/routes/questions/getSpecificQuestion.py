@@ -5,9 +5,9 @@ get_specific_question = Blueprint('get_specific_question', __name__)
 
 @get_specific_question.route('/questions/<question_id>', methods=['GET'])
 def getSpecificQuestion(question_id):
+  question_repository = QuestionRepository()
   try:
     if request.method == 'GET':
-      question_repository = QuestionRepository()
       question = question_repository.getSpecificQuestion(question_id)
       answers_repository = AnswerRepository()
       print(question)

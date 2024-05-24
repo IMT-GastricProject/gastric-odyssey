@@ -5,11 +5,11 @@ add_question_answer = Blueprint('add_question_answer', __name__)
 
 @add_question_answer.route('/questions/<question_id>/answers/create', methods=['POST'])
 def addQuestionAnswer(question_id):
+  answer_repository = AnswerRepository()
   try:
     if request.method == 'POST':
       answer = request.get_json()
       
-      answer_repository = AnswerRepository()
       answer_repository.addQuestionAnswer(question_id, answer["content"])
 
       return {
