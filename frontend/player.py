@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.screen = screen
         self.level = level
         self.on_plate = False
-        self.questions = requests.get('https://twilight-salad-3261.ploomberapp.io/questions').json()['questions'].values()
+        self.questions = requests.get('https://frosty-queen-0226.ploomberapp.io/questions').json()['questions'].values()
 
     #função para facilitar a mudança da imagem ao mudar a direção do sprite
     def directionChange(self, sprite_img):
