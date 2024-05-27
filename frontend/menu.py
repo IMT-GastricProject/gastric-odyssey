@@ -36,7 +36,7 @@ class Menu:
 
             PLAY_BUTTON = Button(image=pygame.image.load("assets/menu/JogarSair Rect.png"), pos=(WIDTH/2, HEIGHT/2), 
                                 text_input="Jogar", font=self.get_font(int(WIDTH/35)), base_color="#d7fcd4", hovering_color="White")
-            LEADERBOARD_BUTTON = Button(image=pygame.image.load("assets/menu/Opcoes Rect.png"), pos=(WIDTH/2, HEIGHT/1.5), 
+            LEADERBOARD_BUTTON = Button(image=pygame.image.load("assets/menu/Leaderboard Rect.png"), pos=(WIDTH/2, HEIGHT/1.5), 
                                 text_input="Leaderboard", font=self.get_font(int(WIDTH/35)), base_color="#d7fcd4", hovering_color="White")
             QUIT_BUTTON = Button(image=pygame.image.load("assets/menu/JogarSair Rect.png"), pos=(WIDTH/2, HEIGHT/1.22), 
                                 text_input="Sair", font=self.get_font(int(WIDTH/35)), base_color="#d7fcd4", hovering_color="White")
