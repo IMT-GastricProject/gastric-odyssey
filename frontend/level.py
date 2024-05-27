@@ -1,7 +1,7 @@
 import pygame
 from settings import TILESIZE
 from tile import Tile
-from player import Player
+from player import Aluno
 from utils.import_csv_layout import import_csv_layout
 class Level:
     def __init__(self, screen):
@@ -11,6 +11,7 @@ class Level:
         self.pressure_plates = pygame.sprite.Group()
         self.screen = screen
         self.player_pos = (900,900)
+        
         #liberar portas
         self.open_door = {
             'laringe': False,
@@ -64,7 +65,7 @@ class Level:
 
 
                             
-        self.player = Player(self.player_pos, [self.visible_sprites], self.obstacles_sprites, self.pressure_plates, self.screen,self)
+        self.player = Aluno(self.player_pos, [self.visible_sprites], self.obstacles_sprites, self.pressure_plates, self.screen,self)
         
     def update_map(self):
         self.visible_sprites = Camera()
