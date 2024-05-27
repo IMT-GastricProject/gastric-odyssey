@@ -2,7 +2,7 @@ import pygame
 from settings import *
 from question_box import *
 
-class Aluno(pygame.sprite.Sprite):
+class Player(pygame.sprite.Sprite):
     def __init__(self,pos,groups, obstacle_sprites, pressure_plate,screen,level):
         super().__init__(groups)
         #define a imagem inicial do sprite do player, ela é modificada a cada mudança de direção, usando o método directionChange 

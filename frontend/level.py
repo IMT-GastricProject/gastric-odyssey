@@ -1,7 +1,7 @@
 import pygame
 from settings import TILESIZE
 from tile import Tile
-from player import Aluno
+from player import Player
 from utils.import_csv_layout import import_csv_layout
 class Level:
     def __init__(self, screen):
@@ -65,7 +65,7 @@ class Level:
 
 
                             
-        self.player = Aluno(self.player_pos, [self.visible_sprites], self.obstacles_sprites, self.pressure_plates, self.screen,self)
+        self.player = Player(self.player_pos, [self.visible_sprites], self.obstacles_sprites, self.pressure_plates, self.screen,self)
         
     def update_map(self):
         self.visible_sprites = Camera()
