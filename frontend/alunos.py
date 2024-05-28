@@ -74,7 +74,7 @@ class Alunos:
                         if multiplier * 40 + 10 >= scroll_offset and multiplier * 40 + 10 <= scroll_offset + blurred_rect.get_height():
                             TRASH_BUTTON = Button(image=pygame.transform.scale(pygame.image.load("assets/menu/trash.png"),
                                                                             (int(WIDTH / 30), int(HEIGHT / 16.875))),
-                                                pos=(WIDTH / 1.2, (HEIGHT / 3.75 + (multiplier * 40 + 10))),
+                                                pos=(WIDTH / 1.15, (HEIGHT / 3.75 + (multiplier * 40 + 10))),
                                                 text_input="", font=get_font(int(WIDTH / 40)), base_color="#d7fcd4",
                                                 hovering_color="White")
                             TRASH_BUTTON.update(SCREEN)
