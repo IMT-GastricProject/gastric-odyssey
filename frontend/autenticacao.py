@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from tkinter import *
+from screen_manager import ScreenManager
 from user import Professor, Aluno
 from settings import API_URL
 import requests
@@ -16,6 +17,7 @@ class Autenticacao(ctk.CTk):
         self.password = ''
         self.email = ''
         self.isVerified = 0
+        self.current_user = None
     #Configurando a janela principal
     def configuracoes_da_janela_inicial(self):
         self.geometry("450x380")
@@ -81,13 +83,13 @@ class Autenticacao(ctk.CTk):
             if self.username == self.all_users[i]['username'] and self.password == self.all_users[i]['password']:
                 self.isVerified = self.all_users[i]['isVerified']
                 if self.isVerified == 1:
-                    current_user = None
+                    
                     if self.all_users[i]['type'] == 1:
-                        current_user = Professor()
+                        self.current_user = Professor()
                     else:
-                        current_user = Aluno()
-                    menu = Menu(current_user)
-                    menu.run()
+                        self.current_user = Aluno()
+                    self.screen = ScreenManager(self.current_user)
+                    self.screen.menu()
                     break
                 else:
                     self.user = [self.username, self.password]

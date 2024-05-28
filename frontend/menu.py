@@ -1,12 +1,11 @@
 import pygame, sys
 from menu_scripts.button import Button
 from game import Game
-from leaderboard import leaderboard_call
-from alunos import alunos_call
 from settings import WIDTH, HEIGHT
 from user import Professor
+
 class Menu:
-    def __init__(self, user):
+    def __init__(self, user,screen_manager):
         pygame.init()
 
         self.SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -15,7 +14,7 @@ class Menu:
         pygame.display.set_icon(self.Icon)
         self.user = user
         self.BG = pygame.transform.scale(pygame.image.load("assets/menu/MenuImage.png"), (WIDTH, HEIGHT))
-
+        self.screen_manager = screen_manager
     def get_font(self, size):
         return pygame.font.Font("assets/menu/font.ttf", size)
 
@@ -24,10 +23,10 @@ class Menu:
         self.game.run()
             
     def leaderboard(self):
-        self.leaderboard = leaderboard_call()
+        self.screen_manager.leaderboard()
 
     def alunos(self):
-        self.alunos = alunos_call()
+        self.screen_manager.alunos()
 
     def main_menu(self):
         while True:
