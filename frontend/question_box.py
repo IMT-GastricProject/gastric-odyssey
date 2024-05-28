@@ -49,18 +49,26 @@ class Question_Box:
            text_pos += (self.text_surface.get_height() * 2)
 
     def format_answers(self):
-        position = 0
+        position = 0    
 
-        alternatives_list = ['a)','b)','c)','d)']
+        alternatives_list = ['a)', 'b)', 'c)', 'd)']
         for i in range(len(alternatives_list)):
-            
             self.alternatives = self.font.render(alternatives_list[i], True, (255, 255, 255))
-            self.screen.blit(self.alternatives, ((self.box_width + self.box_width//5) - (self.alternatives.get_width())/2, (self.box_height + self.alternatives.get_height() * 12) + position))
+            self.screen.blit(self.alternatives, ((self.box_width + self.box_width // 5) - (self.alternatives.get_width()) / 2,
+                                                (self.box_height + self.alternatives.get_height() * 12) + position))
 
-            self.answer_text = self.font.render(self.question['answers'][i]['content'], True, (255, 255, 255))
-            self.screen.blit(self.answer_text, (self.box_width + self.box_width//4, (self.box_height + self.alternatives.get_height() * 12) + position))
-            
-            position += self.alternatives.get_height() * 5
+            answer_text = self.question['answers'][i]['content']
+            text_parts = [answer_text[j:j + 80] for j in range(0, len(answer_text), 80)]
+
+            for part in text_parts:
+                self.answer_text = self.font.render(part, True, (255, 255, 255))
+                self.screen.blit(self.answer_text, (self.box_width + self.box_width // 4,
+                                                    (self.box_height + self.alternatives.get_height() * 12) + position))
+                position += self.alternatives.get_height() * 2
+
+
+
+
 
     def display_selected_text(self, selected_key):
         selected_font = pygame.font.SysFont('Poppins', 30)
