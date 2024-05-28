@@ -13,5 +13,5 @@ class ScreenManager():
   def leaderboard(self):
     self.current_screen = Leaderboard(self)
 
-  def alunos(self):
-    self.current_screen = Alunos(self)
+  def alunos(self, professor):
+    self.current_screen = Alunos(self, professor)

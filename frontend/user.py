@@ -12,5 +12,5 @@ class Aluno(Usuario):
     self.points = 0
 
 class Professor(Usuario):
-  def deletarAluno(id):
+  def deletarAluno(self,id):
     requests.delete(f'{API_URL}/users/delete/{id}')

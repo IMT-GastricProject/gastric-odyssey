@@ -26,7 +26,7 @@ class Menu:
         self.screen_manager.leaderboard()
 
     def alunos(self):
-        self.screen_manager.alunos()
+        self.screen_manager.alunos(self.user)
 
     def main_menu(self):
         while True:
