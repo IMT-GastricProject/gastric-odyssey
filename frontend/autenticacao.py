@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from tkinter import *
+from user import Professor, Aluno
 from settings import API_URL
 import requests
 from menu import Menu
@@ -64,7 +65,7 @@ class Autenticacao(ctk.CTk):
 
     # Função para alternar a visibilidade da senha durante o login
     def toggle_password_login(self):
-        if self.ver_senha_login.get() == 1:  # Verifica se o CheckButton está marcado
+        if self.ver_senha_login.get() == 1:
             self.senha_login_entry.configure(show="")
         else:
             self.senha_login_entry.configure(show="*")
@@ -80,8 +81,13 @@ class Autenticacao(ctk.CTk):
             if self.username == self.all_users[i]['username'] and self.password == self.all_users[i]['password']:
                 self.isVerified = self.all_users[i]['isVerified']
                 if self.isVerified == 1:
-                    menu = Menu()
-                    menu.main_menu()
+                    current_user = None
+                    if self.all_users[i]['type'] == 1:
+                        current_user = Professor()
+                    else:
+                        current_user = Aluno()
+                    menu = Menu(current_user)
+                    menu.run()
                     break
                 else:
                     self.user = [self.username, self.password]
@@ -101,7 +107,6 @@ class Autenticacao(ctk.CTk):
                 for i in range(len(self.all_users)):
                     if self.username == self.all_users[i]['username'] or self.email == self.all_users[i]['email']:
                         self.limpa_entry_cadastro()
-                        print('já cadastrado')
                         break
                     else:
                         requests.post(f'{API_URL}/users/create', json={"username": f"{self.username}", "email": f"{self.email}", "password": f"{self.password}" })
