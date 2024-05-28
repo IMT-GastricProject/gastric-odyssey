@@ -97,7 +97,7 @@ class Leaderboard():
                         pygame.quit()
                         sys.exit()
                     if event.type == pygame.MOUSEBUTTONDOWN:
-                        if BACK_BUTTON.checkForInput(MENU_MOUSE_POS):
+                        if BACK_BUTTON.checkForInput(MENU_MOUSE_POS) and event.button == 1:
                             back()
                         if scroll_bar_rect.collidepoint(event.pos):
                             is_scrolling = True

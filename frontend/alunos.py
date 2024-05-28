@@ -111,10 +111,10 @@ class Alunos:
                         pygame.quit()
                         sys.exit()
                     if event.type == pygame.MOUSEBUTTONDOWN:
-                        if BACK_BUTTON.checkForInput(MENU_MOUSE_POS):
+                        if BACK_BUTTON.checkForInput(MENU_MOUSE_POS) and event.button == 1:
                             back()
                         for button in buttons:
-                            if button.checkForInput(MENU_MOUSE_POS):
+                            if button.checkForInput(MENU_MOUSE_POS) and event.button == 1:
                                 index = buttons.index(button)
                                 aluno_id = ids_alunos[index]
                                 self.professor.deletarAluno(aluno_id)

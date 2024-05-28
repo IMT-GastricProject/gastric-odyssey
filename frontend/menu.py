@@ -65,14 +65,14 @@ class Menu:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS) and event.button == 1:
                         self.play()
-                    if LEADERBOARD_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if LEADERBOARD_BUTTON.checkForInput(MENU_MOUSE_POS) and event.button == 1:
                         self.leaderboard()
                     if 'ALUNOS_BUTTON' in locals():
-                        if ALUNOS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                        if ALUNOS_BUTTON.checkForInput(MENU_MOUSE_POS) and event.button == 1:
                             self.alunos()
-                    if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS) and event.button == 1:
                         pygame.quit()
                         sys.exit()
 
