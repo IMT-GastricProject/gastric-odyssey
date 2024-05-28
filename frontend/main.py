@@ -1,5 +1,4 @@
-from menu import Menu
+from autenticacao import Autenticacao
 
-open_menu = Menu()
-
-open_menu.run()
+autententicao = Autenticacao()
+autententicao.mainloop()

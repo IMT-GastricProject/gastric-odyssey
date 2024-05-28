@@ -1,24 +1,31 @@
 import customtkinter as ctk
 from tkinter import *
-from tkinter import messagebox
+from settings import API_URL
+import requests
+from menu import Menu
 
 class Autenticacao(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.configuracoes_da_janela_inicial()
         self.tela_login()
-
+        self.all_users = list(requests.get(f'{API_URL}/users').json()['users'].values())
+        self.all_users_ids = list(requests.get(f'{API_URL}/users').json()['users'].keys())
+        self.username = ''
+        self.password = ''
+        self.email = ''
+        self.isVerified = 0
     #Configurando a janela principal
     def configuracoes_da_janela_inicial(self):
         self.geometry("450x430")
         self.title('Tela de login e cadastro')
         self.resizable(False, False)
         ctk.set_appearance_mode("dark")
-        self.iconbitmap('asstes/menu/Burger.ico')
+        self.iconbitmap('assets/menu/Burger.ico')
         
     #Tela de login
     def tela_login(self):
-
+        
         #Criar frame do formulário de login
         self.frame_login = ctk.CTkFrame(self, width=500, height=700, fg_color="gray30")
         self.frame_login.place(x=15, y=55)
@@ -48,7 +55,7 @@ class Autenticacao(ctk.CTk):
         self.ver_senha_login.grid(row=4, column=0, padx=10, pady=10)
 
         #Botão de login
-        self.botao_login = ctk.CTkButton(self.frame_login, width=200, text="Entrar", font=("Century Gothic", 14), corner_radius=15, command=self.limpa_entry_login)
+        self.botao_login = ctk.CTkButton(self.frame_login, width=200, text="Entrar", font=("Century Gothic", 14), corner_radius=15, command=self.checkLogin)
         self.botao_login.grid(row=5, column=0, padx=10, pady=10)
 
         #Opção "se não possuir cadastro"
@@ -65,6 +72,61 @@ class Autenticacao(ctk.CTk):
             self.senha_login_entry.configure(show="")
         else:
             self.senha_login_entry.configure(show="*")
+
+    def checkLogin(self):
+        self.all_users = list(requests.get(f'{API_URL}/users').json()['users'].values())
+        self.all_users_ids = list(requests.get(f'{API_URL}/users').json()['users'].keys())
+
+        self.username = self.nome_login_entry.get()
+        self.password = self.senha_login_entry.get()
+        self.email = self.email_login_entry.get()
+
+        for i in range(len(self.all_users)):
+            if self.username == self.all_users[i]['username'] and self.password == self.all_users[i]['password'] and self.email == self.all_users[i]['email']:
+                self.isVerified = self.all_users[i]['isVerified']
+                if self.isVerified == 1:
+                    menu = Menu()
+                    menu.main_menu()
+                    break
+                else:
+                    self.user = [self.username, self.password, self.email]
+                    self.tela_codigo_verificacao(self.user)
+                    break
+
+    def checkCadastro(self):
+        self.all_users = list(requests.get(f'{API_URL}/users').json()['users'].values())
+        self.all_users_ids = list(requests.get(f'{API_URL}/users').json()['users'].keys())
+
+        self.username = self.nome_cadastro_entry.get()
+        self.password = self.senha_cadastro_entry.get()
+        self.email = self.email_cadastro_entry.get()
+
+        if self.username and self.password and self.email:
+            if len(self.username) >= 5 and len(self.password) >= 5 and len(self.email) >= 5 and '@' in self.email:
+                for i in range(len(self.all_users)):
+                    if self.username == self.all_users[i]['username'] or self.email == self.all_users[i]['email']:
+                        self.limpa_entry_cadastro()
+                        print('já cadastrado')
+                        break
+                    else:
+                        requests.post(f'{API_URL}/users/create', json={"username": f"{self.username}", "email": f"{self.email}", "password": f"{self.password}" })
+                        self.user = [self.username, self.password, self.email]
+                        self.limpa_entry_cadastro()
+                        self.tela_codigo_verificacao(self.user)
+                        break
+
+    def checkCode(self,user):
+        self.all_users = list(requests.get(f'{API_URL}/users').json()['users'].values())
+        self.all_users_ids = list(requests.get(f'{API_URL}/users').json()['users'].keys())
+
+        self.code = self.nome_codigo_entry.get()
+
+        for i in range(len(self.all_users)): 
+            if user[0] == self.all_users[i]['username'] and user[1] == self.all_users[i]['password'] and user[2] == self.all_users[i]['email'] and str(self.code) == str(self.all_users[i]['verification_code']):
+                requests.patch(f'{API_URL}/users/verify/{self.code}/{self.all_users_ids[i]}')
+                self.limpa_entry_codigo()
+                break
+
 
     def tela_cadastro(self):
         # Remover o frame de cadastro, se estiver visível
@@ -99,7 +161,7 @@ class Autenticacao(ctk.CTk):
         self.ver_senha_cadastro.grid(row=4, column=0, padx=10, pady=10)
 
         #Botão de cadastro
-        self.botao_cadastro = ctk.CTkButton(self.frame_cadastro, width=200, text="Cadastrar-se", font=("Century Gothic", 14), corner_radius=15, command=self.tela_codigo_verificacao)
+        self.botao_cadastro = ctk.CTkButton(self.frame_cadastro, width=200, text="Cadastrar-se", font=("Century Gothic", 14), corner_radius=15, command=self.checkCadastro)
         self.botao_cadastro.grid(row=5, column=0, padx=10, pady=10)
 
         #Opção "se já possuir cadastro"
@@ -118,9 +180,13 @@ class Autenticacao(ctk.CTk):
             self.senha_cadastro_entry.configure(show="*")
     
     #Tela de código de verificação
-    def tela_codigo_verificacao(self):
-        #Remover o formulário de cadastro
-        self.frame_cadastro.place_forget()
+    def tela_codigo_verificacao(self, user):
+        #Remover o formulário de cadastro ou de login
+        if hasattr(self, 'frame_cadastro') and self.frame_cadastro.winfo_exists():
+            self.frame_cadastro.place_forget()
+
+        if hasattr(self, 'frame_login') and self.frame_login.winfo_exists():
+            self.frame_login.place_forget()
 
         #Criar frame do formulário de cadastro
         self.frame_codigo = ctk.CTkFrame(self, width=500, height=700, fg_color="gray30")
@@ -135,7 +201,7 @@ class Autenticacao(ctk.CTk):
         self.nome_codigo_entry.grid(row=1, column=0, padx=10, pady=10)
 
         #Botão de confirmar
-        self.botao_confirmar = ctk.CTkButton(self.frame_codigo, width=200, text="Confirmar", font=("Century Gothic", 14), corner_radius=15, command=self.limpa_entry_codigo)
+        self.botao_confirmar = ctk.CTkButton(self.frame_codigo, width=200, text="Confirmar", font=("Century Gothic", 14), corner_radius=15, command=lambda: self.checkCode(user))
         self.botao_confirmar.grid(row=5, column=0, padx=10, pady=10)
 
         #Botão de cancelar/voltar
@@ -155,7 +221,3 @@ class Autenticacao(ctk.CTk):
 
     def limpa_entry_codigo(self):
         self.nome_codigo_entry.delete(0,END)
-
-if __name__=="__main__":
-    app = Autenticacao()
-    app.mainloop()
