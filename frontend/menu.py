@@ -2,6 +2,7 @@ import pygame, sys
 from menu_scripts.button import Button
 from game import Game
 from leaderboard import leaderboard_call
+from alunos import alunos_call
 from settings import WIDTH, HEIGHT
 
 class Menu:
@@ -25,6 +26,9 @@ class Menu:
     def leaderboard(self):
         self.leaderboard = leaderboard_call()
 
+    def alunos(self):
+        self.alunos = alunos_call()
+
     def main_menu(self):
         while True:
             self.SCREEN.blit(self.BG, (0, 0))
@@ -38,12 +42,14 @@ class Menu:
                                 text_input="Jogar", font=self.get_font(int(WIDTH/35)), base_color="#d7fcd4", hovering_color="White")
             LEADERBOARD_BUTTON = Button(image=pygame.image.load("assets/menu/Leaderboard Rect.png"), pos=(WIDTH/2, HEIGHT/1.5), 
                                 text_input="Leaderboard", font=self.get_font(int(WIDTH/35)), base_color="#d7fcd4", hovering_color="White")
+            ALUNOS_BUTTON = Button(image=pygame.image.load("assets/menu/Leaderboard Rect.png"), pos=(WIDTH/1.13, HEIGHT/1.1), 
+                                text_input="Alunos", font=self.get_font(int(WIDTH/35)), base_color="#d7fcd4", hovering_color="White")
             QUIT_BUTTON = Button(image=pygame.image.load("assets/menu/JogarSair Rect.png"), pos=(WIDTH/2, HEIGHT/1.22), 
                                 text_input="Sair", font=self.get_font(int(WIDTH/35)), base_color="#d7fcd4", hovering_color="White")
 
             self.SCREEN.blit(MENU_TEXT, MENU_RECT)
 
-            for button in [PLAY_BUTTON, LEADERBOARD_BUTTON, QUIT_BUTTON]:
+            for button in [PLAY_BUTTON, LEADERBOARD_BUTTON, ALUNOS_BUTTON, QUIT_BUTTON]:
                 button.changeColor(MENU_MOUSE_POS)
                 button.update(self.SCREEN)
                 
@@ -56,6 +62,8 @@ class Menu:
                         self.play()
                     if LEADERBOARD_BUTTON.checkForInput(MENU_MOUSE_POS):
                         self.leaderboard()
+                    if ALUNOS_BUTTON.checkForInput(MENU_MOUSE_POS):
+                        self.alunos()
                     if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                         pygame.quit()
                         sys.exit()

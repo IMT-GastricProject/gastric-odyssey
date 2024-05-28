@@ -2,11 +2,11 @@ import pygame, sys
 from menu_scripts.button import Button
 from settings import WIDTH, HEIGHT
 
-def leaderboard_call():
+def alunos_call():
     pygame.init()
 
     SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Leaderboard")
+    pygame.display.set_caption("Alunos")
     Icon = pygame.image.load("assets/menu/Burger.png")
     pygame.display.set_icon(Icon)
 
@@ -66,7 +66,7 @@ def leaderboard_call():
 
             MENU_MOUSE_POS = pygame.mouse.get_pos()
 
-            MENU_TEXT = pygame.transform.scale(pygame.image.load("assets/menu/Leaderboard.png"), (WIDTH/1.5, HEIGHT/1.5))
+            MENU_TEXT = pygame.transform.scale(pygame.image.load("assets/menu/Alunos.png"), (WIDTH/1.5, HEIGHT/1.5))
             MENU_RECT = MENU_TEXT.get_rect(center=(WIDTH/2, HEIGHT/5))
 
             BACK_BUTTON = Button(image=pygame.image.load("assets/menu/Voltar Rect.png"), pos=(WIDTH/2, HEIGHT/1.2), 

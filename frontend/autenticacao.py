@@ -17,7 +17,7 @@ class Autenticacao(ctk.CTk):
         self.isVerified = 0
     #Configurando a janela principal
     def configuracoes_da_janela_inicial(self):
-        self.geometry("450x430")
+        self.geometry("450x380")
         self.title('Tela de login e cadastro')
         self.resizable(False, False)
         ctk.set_appearance_mode("dark")
@@ -25,14 +25,14 @@ class Autenticacao(ctk.CTk):
         
     #Tela de login
     def tela_login(self):
+
+        #Remover o formulário de cadastro ou de login
+        if hasattr(self, 'frame_cadastro') and self.frame_cadastro.winfo_exists():
+            self.frame_cadastro.place_forget()
         
         #Criar frame do formulário de login
         self.frame_login = ctk.CTkFrame(self, width=500, height=700, fg_color="gray30")
-        self.frame_login.place(x=15, y=55)
-
-        #Título da plataforma de login
-        self.title = ctk.CTkLabel(self, text="Acessar menu do jogo", font=("Century Gothic", 24))
-        self.title.grid(row=0, column=0, padx=83, pady=10)
+        self.frame_login.place(x=15, y=10)
 
         #Colocar widgets dentro do frame
         self.lb_title = ctk.CTkLabel(self.frame_login, text="Login", font=("Century Gothic", 20))
@@ -41,10 +41,6 @@ class Autenticacao(ctk.CTk):
         #Espaço para inserir nome de usuário
         self.nome_login_entry = ctk.CTkEntry(self.frame_login, width=400, placeholder_text="Nome de usuário", font=("Century Gothic", 14), corner_radius=15)
         self.nome_login_entry.grid(row=1, column=0, padx=10, pady=10)
-    
-        #Espaço para inserir e-mail
-        self.email_login_entry = ctk.CTkEntry(self.frame_login, width=400, placeholder_text="E-mail institucional", font=("Century Gothic", 14), corner_radius=15)
-        self.email_login_entry.grid(row=2, column=0, padx=10, pady=10)
 
         #Espaço para inserir senha
         self.senha_login_entry = ctk.CTkEntry(self.frame_login, width=400, placeholder_text="Senha", font=("Century Gothic", 14), corner_radius=15, show="*")
@@ -79,17 +75,16 @@ class Autenticacao(ctk.CTk):
 
         self.username = self.nome_login_entry.get()
         self.password = self.senha_login_entry.get()
-        self.email = self.email_login_entry.get()
 
         for i in range(len(self.all_users)):
-            if self.username == self.all_users[i]['username'] and self.password == self.all_users[i]['password'] and self.email == self.all_users[i]['email']:
+            if self.username == self.all_users[i]['username'] and self.password == self.all_users[i]['password']:
                 self.isVerified = self.all_users[i]['isVerified']
                 if self.isVerified == 1:
                     menu = Menu()
                     menu.main_menu()
                     break
                 else:
-                    self.user = [self.username, self.password, self.email]
+                    self.user = [self.username, self.password]
                     self.tela_codigo_verificacao(self.user)
                     break
 
@@ -122,7 +117,7 @@ class Autenticacao(ctk.CTk):
         self.code = self.nome_codigo_entry.get()
 
         for i in range(len(self.all_users)): 
-            if user[0] == self.all_users[i]['username'] and user[1] == self.all_users[i]['password'] and user[2] == self.all_users[i]['email'] and str(self.code) == str(self.all_users[i]['verification_code']):
+            if user[0] == self.all_users[i]['username'] and user[1] == self.all_users[i]['password'] and str(self.code) == str(self.all_users[i]['verification_code']):
                 requests.patch(f'{API_URL}/users/verify/{self.code}/{self.all_users_ids[i]}')
                 self.limpa_entry_codigo()
                 break
@@ -138,7 +133,7 @@ class Autenticacao(ctk.CTk):
 
         #Criar frame do formulário de cadastro
         self.frame_cadastro = ctk.CTkFrame(self, width=500, height=700, fg_color="gray30")
-        self.frame_cadastro.place(x=15, y=55)
+        self.frame_cadastro.place(x=15, y=10)
 
         #Colocar widgets dentro do frame
         self.lb_title = ctk.CTkLabel(self.frame_cadastro, text="Cadastro", font=("Century Gothic", 20))
@@ -190,7 +185,7 @@ class Autenticacao(ctk.CTk):
 
         #Criar frame do formulário de cadastro
         self.frame_codigo = ctk.CTkFrame(self, width=500, height=700, fg_color="gray30")
-        self.frame_codigo.place(x=15, y=55)
+        self.frame_codigo.place(x=15, y=10)
 
         #Colocar widgets dentro do frame
         self.lb_title = ctk.CTkLabel(self.frame_codigo, text="Insira o código de verificação enviado \n para o seu e-mail", font=("Century Gothic", 20))
