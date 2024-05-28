@@ -1,11 +1,13 @@
 import pygame, sys
+import requests
 from menu_scripts.button import Button
-from settings import WIDTH, HEIGHT
+from settings import API_URL, WIDTH, HEIGHT
 
 class Leaderboard():
     def __init__(self,screen_manager):
         pygame.init()
-
+        self.alunos = list(requests.get(f'{API_URL}/users').json()['users'].values())
+        self.alunos_ordenados = sorted(self.alunos, key=lambda aluno: aluno["points"], reverse=True)
         SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Leaderboard")
         Icon = pygame.image.load("assets/menu/Burger.png")
@@ -61,8 +63,8 @@ class Leaderboard():
                 content_surface = pygame.Surface((blurred_rect.get_width(), content_height), pygame.SRCALPHA)
                 content_surface.fill((255, 255, 255, 0)) 
                 
-                for i in range(20):
-                    text = get_font(20).render(f"Item {i+1}", True, (0, 0, 0))
+                for i in range(len(self.alunos)):
+                    text = get_font(20).render(f"{i+1} - {self.alunos_ordenados[i]['username']} ----------------- {self.alunos_ordenados[i]['points']} pontos.", True, (255, 255, 255))
                     content_surface.blit(text, (20, i * 40 + 10))
 
                 keys = pygame.key.get_pressed()
