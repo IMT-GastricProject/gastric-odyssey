@@ -5,12 +5,14 @@ import settings
 
 #exibir jogo (com base nas configurações)
 class Game:
-    def __init__(self):
+    def __init__(self, screen_manager, user):
         pygame.init()
         self.screen = pygame.display.set_mode(SCREEN_SIZE, pygame.RESIZABLE)
         pygame.display.set_caption('Gastric Odyssey')
+        self.screen_manager = screen_manager
         self.clock = pygame.time.Clock()
-        self.level = Level(self.screen)
+        self.user = user
+        self.level = Level(self.screen, self.screen_manager, self.user)
     def run(self):
         while True:
             for event in pygame.event.get():

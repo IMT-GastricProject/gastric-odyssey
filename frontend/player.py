@@ -3,12 +3,13 @@ from settings import *
 from question_box import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos,groups, obstacle_sprites, pressure_plate,screen,level):
+    def __init__(self,pos,groups, obstacle_sprites, pressure_plate, dont_touch, tchau ,screen,user,level):
         super().__init__(groups)
         #define a imagem inicial do sprite do player, ela é modificada a cada mudança de direção, usando o método directionChange 
         self.directionChange('player_right')
         #rect é o retângulo que forma a imagem do sprite. É diferente da hitbox
         self.rect = self.image.get_rect(topleft = pos)
+        self.user = user
         #hitbox flúida para o personagem (leva em consideração a existência do rect)
         self.hitbox = self.rect.inflate(-26,-26)
         #define a direção como um vetor de duas dimensões (x,y)
@@ -17,7 +18,9 @@ class Player(pygame.sprite.Sprite):
         self.speed = 55
         #define o obstacle_sprites que armazena os obstáculos que o player colide, que é passado como argumento de Player
         self.obstacle_sprites = obstacle_sprites
+        self.dont_touch = dont_touch
         self.pressure_plate = pressure_plate
+        self.tchau = tchau
         self.screen = screen
         self.level = level
         self.on_plate = False
@@ -65,7 +68,8 @@ class Player(pygame.sprite.Sprite):
         self.collision('vertical')
         self.rect.center = self.hitbox.center
         self.pressure_plate_collision()
-
+        self.dont_touch_collision()
+        self.tchau_collision()
     def collision(self, direction):
         if direction == 'horizontal':
             for sprite in self.obstacle_sprites:
@@ -89,12 +93,32 @@ class Player(pygame.sprite.Sprite):
             if sprite.hitbox.colliderect(self.rect):
                 touching = True
                 if not self.on_plate:
-                    box = Question_Box(self.screen, self.questions,self.level,sprite.sprite_type)
+                    box = Question_Box(self.screen, self.questions,self.level,sprite.sprite_type, self.user)
                     box.display()
                     self.on_plate = True
         if not touching:
             self.on_plate = False
 
+    def dont_touch_collision(self):
+        touching = False
+        for sprite in self.dont_touch:
+            if sprite.hitbox.colliderect(self.rect):
+                touching = True
+                if not self.on_plate:
+                    self.level.teleport_player()
+        if not touching:
+            self.on_plate = False
+
+    def tchau_collision(self):
+        touching = False
+        for sprite in self.tchau:
+            if sprite.hitbox.colliderect(self.rect):
+                touching = True
+                if not self.on_plate:
+                    self.level.finish()
+        if not touching:
+            self.on_plate = False
+    
     def update(self):
         self.input()
         self.move(self.speed)

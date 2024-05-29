@@ -85,9 +85,9 @@ class Autenticacao(ctk.CTk):
                 if self.isVerified == 1:
                     
                     if self.all_users[i]['type'] == 1:
-                        self.current_user = Professor()
+                        self.current_user = Professor(self.all_users[i],self.all_users_ids[i])
                     else:
-                        self.current_user = Aluno()
+                        self.current_user = Aluno(self.all_users[i],self.all_users_ids[i])
                     self.screen = ScreenManager(self.current_user)
                     self.screen.menu()
                     break

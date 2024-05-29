@@ -15,11 +15,12 @@ class Menu:
         self.user = user
         self.BG = pygame.transform.scale(pygame.image.load("assets/menu/MenuImage.png"), (WIDTH, HEIGHT))
         self.screen_manager = screen_manager
+        self.user.setPoints(0)
     def get_font(self, size):
         return pygame.font.Font("assets/menu/font.ttf", size)
 
     def play(self):
-        self.game = Game()
+        self.game = Game(self.screen_manager,self.user)
         self.game.run()
             
     def leaderboard(self):

@@ -4,7 +4,7 @@ import requests
 from random import choice
 
 class Question_Box:
-    def __init__(self, screen, questions, level, type):
+    def __init__(self, screen, questions, level, type, user):
         pygame.font.init()
         
         self.image = pygame.image.load("assets/questions/question_box.png")
@@ -21,10 +21,9 @@ class Question_Box:
         self.screen = screen
         self.req = list(questions)
         self.question = choice(self.req)
-        
+        self.user = user
         self.question_header = self.question['title']
         self.answers = self.question['answers']
-
         self.display_box = True
         
         self.correct_answer = self.question['correct_answer_id']
@@ -75,8 +74,15 @@ class Question_Box:
     
         if self.selected_answer_id == self.correct_answer:
             selected_text_surface = selected_font.render(f"Alternativa selecionada: {selected_key.upper()} - Correta, abrindo porta...", True, (0, 255, 0))
+            self.user.addPoints(5)
         else:
             selected_text_surface = selected_font.render(f"Alternativa selecionada: {selected_key.upper()} - Incorreta", True, (255, 0, 0))
+            if self.user.getPoints() > 0:
+                self.user.removePoints(2)
+            elif self.user.getPoints() == 1:
+                self.user.removePoints(1)
+            else:
+                None
 
         selected_text_rect = selected_text_surface.get_rect()
 
