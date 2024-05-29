@@ -127,6 +127,9 @@ class Autenticacao(ctk.CTk):
             if user[0] == self.all_users[i]['username'] and user[1] == self.all_users[i]['password'] and str(self.code) == str(self.all_users[i]['verification_code']):
                 requests.patch(f'{API_URL}/users/verify/{self.code}/{self.all_users_ids[i]}')
                 self.limpa_entry_codigo()
+                if hasattr(self, 'frame_codigo') and self.frame_codigo.winfo_exists():
+                    self.frame_codigo.place_forget()
+                    self.tela_login()
                 break
 
 
