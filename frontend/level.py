@@ -48,7 +48,8 @@ class Level:
                 else:
                     requests.patch(f'{API_URL}/points/add/{self.user.getUser()['id']}/{abs(self.user_points)}')
                 requests.patch(f'{API_URL}/points/add/{self.user.getUser()['id']}/{self.user.getPoints()}')
-
+                
+            self.user.setPoints(0)
             self.screen_manager.menu()
             self.finish_or_not = True
 
