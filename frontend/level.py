@@ -15,7 +15,7 @@ class Level:
         self.screen = screen
         self.user = user
         self.screen_manager = screen_manager
-        self.player_pos = (8817,3575)
+        self.player_pos = (900,900)
         self.finish_or_not = False
         self.user_points = list(requests.get(f'{API_URL}/users/{self.user.getUser()['id']}').json().values())[0][f'{self.user.getUser()['id']}']['points']
         #liberar portas
