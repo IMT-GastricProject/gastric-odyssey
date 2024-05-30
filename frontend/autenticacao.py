@@ -82,7 +82,7 @@ class Autenticacao(ctk.CTk):
         for i in range(len(self.all_users)):
             if self.username == self.all_users[i]['username'] and self.password == self.all_users[i]['password']:
                 self.isVerified = self.all_users[i]['isVerified']
-                if self.isVerified == 1:
+                if self.isVerified == 1:    
                     
                     if self.all_users[i]['type'] == 1:
                         self.current_user = Professor(self.all_users[i],self.all_users_ids[i])

@@ -43,10 +43,7 @@ class Level:
     def finish(self):
         if self.finish_or_not == False:
             if self.user.getPoints() > self.user_points:
-                if self.user_points >= 0:
-                    requests.patch(f'{API_URL}/points/remove/{self.user.getUser()['id']}/{self.user_points}')
-                else:
-                    requests.patch(f'{API_URL}/points/add/{self.user.getUser()['id']}/{abs(self.user_points)}')
+                requests.patch(f'{API_URL}/points/remove/{self.user.getUser()['id']}/{self.user_points}')
                 requests.patch(f'{API_URL}/points/add/{self.user.getUser()['id']}/{self.user.getPoints()}')
                 
             self.user.setPoints(0)
