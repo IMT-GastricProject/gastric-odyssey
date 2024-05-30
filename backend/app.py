@@ -1,5 +1,5 @@
-from api import API
+from api import DataService
 
-app = API()
+app = DataService()
 
 app.run()

@@ -20,7 +20,7 @@ from routes.questions.answers.getQuestionAnswers import get_question_answers
 from routes.questions.answers.updateAnswer import update_answer
 
 
-class API:
+class DataService:
   def __init__(self):
     self.app = Flask(__name__)
 
